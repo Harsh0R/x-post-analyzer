@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "X Post Analyzer",
+  "version": "0.2.0",
+  "description": "Shows small badges on x.com posts: promo, engagement bait, rage-bait, scam-like, toxicity, topic and more. Can hide posts you choose.",
+  "permissions": ["storage", "offscreen"],
+  "host_permissions": [
+    "https://huggingface.co/*",
+    "https://*.huggingface.co/*",
+    "https://*.hf.co/*"
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'"
+  },
+  "background": { "service_worker": "background.js" },
+  "content_scripts": [
+    {
+      "matches": ["https://x.com/*", "https://twitter.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "X Post Analyzer"
+  }
+}

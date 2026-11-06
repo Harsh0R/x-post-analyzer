@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>X Post Analyzer</title>
+    <style>
+      :root { color-scheme: light dark; }
+      body { font: 13px system-ui, sans-serif; width: 320px; margin: 12px; }
+      h1 { font-size: 15px; margin: 0 0 8px; }
+      h2 { font-size: 13px; margin: 0 0 6px; }
+      label { display: flex; align-items: center; gap: 8px; margin: 4px 0; }
+      .row { margin: 10px 0; }
+      input[type="range"] { width: 100%; }
+      textarea { width: 100%; box-sizing: border-box; font: inherit; min-height: 54px; }
+      button { font: inherit; padding: 3px 10px; cursor: pointer; }
+      .group { margin-top: 10px; border-top: 1px solid rgba(128,128,128,.3); padding-top: 8px; }
+      .hint { opacity: 0.7; font-size: 11px; margin: 2px 0 6px; }
+      .grid2 { display: grid; grid-template-columns: 1fr 1fr; column-gap: 8px; }
+      .actions { display: flex; gap: 8px; align-items: center; }
+    </style>
+  </head>
+  <body>
+    <h1>X Post Analyzer</h1>
+    <label><input type="checkbox" id="enabled" /> Enabled</label>
+    <label><input type="checkbox" id="dimPromo" /> Dim promotional posts (hover to reveal)</label>
+    <div class="row">
+      <div>Badge confidence threshold: <b id="thresholdValue"></b></div>
+      <input type="range" id="threshold" min="0.3" max="0.95" step="0.05" />
+    </div>
+    <div class="row">
+      <div>Max badges per post: <b id="maxChipsValue"></b></div>
+      <input type="range" id="maxChips" min="1" max="4" step="1" />
+    </div>
+
+    <div class="group">
+      <h2>Categories</h2>
+      <div class="grid2" id="categories"></div>
+    </div>
+
+    <div class="group">
+      <h2>On-device AI model</h2>
+      <label><input type="checkbox" id="useModel" /> Refine labels with an AI model</label>
+      <div class="hint" id="modelStatus"></div>
+      <div class="hint">One-time model download from huggingface.co, then it runs locally. Post text never leaves your browser. Improves sentiment, emotion, topic, type and rage-bait.</div>
+    </div>
+
+    <div class="group">
+      <h2>Auto-hide</h2>
+      <div class="hint">Collapse matching posts behind a small bar with a Show button.</div>
+      <div>Only when confidence is at least <b id="hideConfValue"></b></div>
+      <input type="range" id="hideConf" min="0.5" max="0.95" step="0.05" />
+      <div class="hint">Hide when flagged as:</div>
+      <div class="grid2" id="hideFlags"></div>
+      <div class="hint">Hide topics:</div>
+      <div class="grid2" id="hideTopics"></div>
+      <div class="hint">Hide posts containing (one per line or comma separated):</div>
+      <textarea id="hideKeywords" placeholder="spoiler&#10;giveaway"></textarea>
+    </div>
+
+    <div class="group">
+      <h2>Labeling</h2>
+      <label><input type="checkbox" id="labeling" /> Labeling mode (adds a pencil button to each post)</label>
+      <div class="hint">Record correct answers to measure accuracy. Stored only on this computer.</div>
+      <div class="actions">
+        <span id="labelCount">0 labels</span>
+        <button id="exportLabels">Export labels</button>
+        <button id="clearLabels">Clear</button>
+      </div>
+    </div>
+
+    <p class="hint">Rules run locally. With the AI model on, only the one-time model download touches the network.</p>
+    <script src="popup.js"></script>
+  </body>
+</html>
